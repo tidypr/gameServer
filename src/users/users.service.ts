@@ -28,6 +28,10 @@ export class UsersService {
     return this.repo.find();
   }
 
+  async findUserByUsername(username: string): Promise<User | null> {
+    return this.repo.findOneBy({ username });
+  }
+
   // Partial<T>는 T의 모든 속성을 선택적으로 만듬(0개 ~ 전부)
   async updateUser(id: number, attr: Partial<User>): Promise<User | null> {
     const user = await this.findUser(id);

@@ -6,6 +6,10 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
+
 const typeOrmConfig = TypeOrmModule.forRoot({
   type: 'sqlite',
   database: 'dev.db.sqlite',
@@ -14,12 +18,12 @@ const typeOrmConfig = TypeOrmModule.forRoot({
 
   // 개발 환경에서만 true로 설정
   synchronize: true, 
-  logging: true,
+  // logging: true,
 });
 
 @Module({
-  imports: [typeOrmConfig, UsersModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [typeOrmConfig, UsersModule, AuthModule],
+  controllers: [AppController, AuthController],
+  providers: [AppService, AuthService],
 })
 export class AppModule { }

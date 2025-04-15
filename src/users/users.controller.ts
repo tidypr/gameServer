@@ -1,19 +1,30 @@
-import { Body, Controller, Get, Post, Patch, Param, Query, Delete, NotFoundException } from '@nestjs/common';
+import {
+  Body, Controller, Get, Post, Patch, Param, Query, Delete, NotFoundException
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
+import { Serialize } from 'src/interceptors/seriallize.interceptor';
+import { ReadUserDto } from './dto/read-user.dto';
 
-@Controller('auth')
+@Serialize(ReadUserDto) // serialize 데코레이터를 사용하여 응답을 변환
+@Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  private readonly usersService: UsersService
 
-  @Post('/signup')
-  createUser(@Body() body: CreateUserDto) {
-    const { username, password } = body;
-    this.usersService.createUser(username, password);
-    return 'User created!';
+  constructor(usersService: UsersService) {
+    this.usersService = usersService;
   }
 
+  // Auth Controller에서 사용하기 위해 주석 처리
+  // @Post('/signup')
+  // createUser(@Body() body: CreateUserDto) {
+  //   const { username, password } = body;
+  //   this.usersService.createUser(username, password);
+  //   return 'User created!';
+  // }
+
+  // @UseInterceptors(ClassSerializerInterceptor) // class-transformer에서 제외된 속성은 응답에 포함되지 않음
   @Get('/:id')
   findUser(@Param('id') id: string) {
     const user = this.usersService.findUser(+id);
@@ -31,8 +42,7 @@ export class UsersController {
   @Patch('/:id')
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     // const { username, password } = body;
-    this.usersService.updateUser(+id, body);
-    return 'User updated!';
+    return this.usersService.updateUser(+id, body);
   }
 
   @Delete('/:id')
