@@ -9,6 +9,7 @@ import { User } from './users/user.entity';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
+import { GamesessionModule } from './gamesession/gamesession.module';
 
 const typeOrmConfig = TypeOrmModule.forRoot({
   type: 'sqlite',
@@ -22,7 +23,7 @@ const typeOrmConfig = TypeOrmModule.forRoot({
 });
 
 @Module({
-  imports: [typeOrmConfig, UsersModule, AuthModule],
+  imports: [typeOrmConfig, UsersModule, AuthModule, GamesessionModule],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
 })

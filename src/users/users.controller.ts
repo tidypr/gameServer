@@ -1,11 +1,12 @@
 import {
   Body, Controller, Get, Post, Patch, Param, Query, Delete, NotFoundException
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { Serialize } from 'src/interceptors/seriallize.interceptor';
 import { ReadUserDto } from './dto/read-user.dto';
+
+import { CurrentUser } from 'src/users/decorators/current-user.decorator'; // 현재 사용자 정보 가져오기
 
 @Serialize(ReadUserDto) // serialize 데코레이터를 사용하여 응답을 변환
 @Controller('user')
@@ -14,6 +15,15 @@ export class UsersController {
 
   constructor(usersService: UsersService) {
     this.usersService = usersService;
+  }
+
+  @Get('/myProfile')
+  getMyProfile(@CurrentUser() userId: number) {
+    const user = this.usersService.findUser(userId);
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+    return user;
   }
 
   // Auth Controller에서 사용하기 위해 주석 처리

@@ -35,11 +35,15 @@ export class UsersService {
   // Partial<T>는 T의 모든 속성을 선택적으로 만듬(0개 ~ 전부)
   async updateUser(id: number, attr: Partial<User>): Promise<User | null> {
     const user = await this.findUser(id);
+    // console.log(user)
+    console.log(attr)
     if (!user) {
       throw new NotFoundException('User not found!');
     };
 
     Object.assign(user, attr); // user에 attr을 덮어씌움
+
+    // console.log(user)
     return this.repo.save(user);
   }
 

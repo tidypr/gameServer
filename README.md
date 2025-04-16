@@ -27,10 +27,10 @@ NestJS와 TypeScript를 사용하여 게임 관련 API를 구축하는 프로젝
   - `createdAt`: 생성일시
   - `updatedAt`: 수정일시
 
-- **GameRecord**: 게임 정보
+- **GameSession**: 게임 정보
   - `id`: 게임 기록 ID (Primary Key)
   - `userId`: 사용자 ID (Foreign Key)
-  - `gameId`: 게임 ID (Foreign Key)
+  - `gameName`: 게임 이름
   - `level`: 게임 레벨
   - `score`: 게임 점수
   - `duration`: 게임 소요 시간
